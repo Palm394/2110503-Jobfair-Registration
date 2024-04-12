@@ -3,8 +3,8 @@ const dotenv = require("dotenv");
 
 const connectDB = require("./config/db");
 
-const company = require("./routes/company");
-const appointments = require("./routes/appointments");
+const companies = require("./routes/companies");
+const bookings = require("./routes/bookings");
 const auth = require("./routes/auth");
 
 dotenv.config({ path: "./config/config.env" });
@@ -15,8 +15,8 @@ connectDB();
 const app = express();
 app.use(express.json());
 
-app.use("/api/v1/company", company);
-app.use("/api/v1/appointments", appointments);
+app.use("/api/v1/companies", companies);
+app.use("/api/v1/bookings", bookings);
 app.use("/api/v1/auth", auth);
 
 const PORT = process.env.PORT || 5000;

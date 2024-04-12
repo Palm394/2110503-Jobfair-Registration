@@ -3,7 +3,7 @@ const Company = require("../models/Company");
 //@desc     Get all company
 //@route    GET /api/v1/company
 //@access   Public
-exports.getCompanys = async (req, res, next) => {
+exports.getCompanies = async (req, res, next) => {
 	let query;
 
 	// Copy req.query
@@ -23,7 +23,7 @@ exports.getCompanys = async (req, res, next) => {
 		(match) => `$${match}`
 	);
 
-	query = Company.find(JSON.parse(queryStr)).populate("appointments");
+	query = Company.find(JSON.parse(queryStr)).populate("bookings");
 
 	// Select Fields
 	if (req.query.select) {
@@ -76,6 +76,7 @@ exports.getCompanys = async (req, res, next) => {
 			data: company,
 		});
 	} catch (error) {
+		console.log(error.stack);
 		res.status(400).json({ success: false });
 	}
 };

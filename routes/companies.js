@@ -1,23 +1,23 @@
 const express = require("express");
 const {
 	getCompany,
-	getCompanys,
+	getCompanies,
 	createCompany,
 	updateCompany,
 	deleteCompany,
-} = require("../controllers/company");
+} = require("../controllers/companies");
 
-const appointmentRouter = require("./appointments");
+const bookingRouter = require("./bookings");
 
 const router = express.Router();
 const { protect, authorize } = require("../middleware/auth");
 
 // Re-route into other resource routers
-router.use("/:companyId/appointments", appointmentRouter);
+router.use("/:companyId/bookings", bookingRouter);
 
 router
 	.route("/")
-	.get(getCompanys)
+	.get(getCompanies)
 	.post(protect, authorize("admin"), createCompany);
 router
 	.route("/:id")
