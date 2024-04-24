@@ -77,6 +77,19 @@ exports.addBooking = async (req, res, next) => {
 	try {
 		req.body.company = req.params.companyId;
 
+		const apptDate = new Date(req.body.apptDate);
+		console.log(apptDate);
+
+		if (
+			apptDate < new Date("2022-05-10") ||
+			apptDate >= new Date("2022-05-14")
+		) {
+			return res.status(400).json({
+				success: false,
+				message: `Appointment date must be between 10-13 May 2022`,
+			});
+		}
+
 		const company = await Company.findById(req.params.companyId);
 		if (!company) {
 			return res.status(404).json({
@@ -90,6 +103,16 @@ exports.addBooking = async (req, res, next) => {
 
 		// Check for existed booking
 		const existedBooking = await Booking.find({ user: req.user.id });
+
+		const existedBookingByCompany = await Booking.find({
+			company: req.params.companyId,
+		});
+		if (existedBookingByCompany.length >= 10 && req.user.role !== "admin") {
+			return res.status(400).json({
+				success: false,
+				message: `The company with ID ${req.params.companyId} has already created 10 bookings`,
+			});
+		}
 
 		// If the user is not an admin, they can only create 3 bookings
 		if (existedBooking.length >= 3 && req.user.role !== "admin") {

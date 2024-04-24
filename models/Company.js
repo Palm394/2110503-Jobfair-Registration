@@ -33,6 +33,14 @@ const CompanySchema = new mongoose.Schema(
 			type: String,
 			required: [true, "Please add a region"],
 		},
+		website: {
+			type: String,
+			required: [true, "Please add a website"],
+		},
+		description: {
+			type: String,
+			required: [true, "Please add a description"],
+		},
 	},
 	{
 		toJSON: { virtuals: true },
