@@ -155,6 +155,17 @@ exports.updateBooking = async (req, res, next) => {
 			});
 		}
 
+		const apptDate = new Date(req.body.apptDate);
+		if (
+			apptDate &&
+			(apptDate < new Date("2022-05-10") || apptDate >= new Date("2022-05-14"))
+		) {
+			return res.status(400).json({
+				success: false,
+				message: `Appointment date must be between 10-13 May 2022`,
+			});
+		}
+
 		booking = await Booking.findByIdAndUpdate(req.params.id, req.body, {
 			new: true,
 			runValidators: true,
